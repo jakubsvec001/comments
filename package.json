@@ -7,7 +7,7 @@
     "test": "echo \"boboBeats comment component signon\"",
     "start": "nodemon server/index.js",
     "bundle": "webpack --watch",
-    "test": "echo "JEST TEST HERE"
+    "test": "echo \"JEST TEST HERE\""
   },
   "repository": {
     "type": "git",
