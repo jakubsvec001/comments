@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"boboBeats comment component signon\"",
     "start": "nodemon server/index.js",
-    "comment_bundle_dev": "webpack --watch"
+    "bundle": "webpack --watch",
+    "test": "echo "JEST TEST HERE"
   },
   "repository": {
     "type": "git",
