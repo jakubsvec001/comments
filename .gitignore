@@ -1,2 +1,3 @@
 comments.bundle.js
 node_modules/
+*\.sql
