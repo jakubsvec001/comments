@@ -7,8 +7,14 @@ const app = express();
 
 app.use(express.static(PUBLIC));
 
+app.get('api/songs', (res, req) => {
+  res.json({ all_comments: 'here' });
+});
+
 app.get('/api/songs/:songId', (req, res) => {
   res.send();
 });
 
-app.listen(PORT, () => console.log(`boboBeats server listening on port ${PORT}.`));
+app.listen(PORT, () => {
+  console.log(`boboBeats server listening on port ${PORT}.`);
+});
