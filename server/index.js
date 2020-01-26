@@ -7,6 +7,10 @@ const app = express();
 
 app.use(express.static(PUBLIC));
 
+app.get('/api/songs', (req, res) => {
+  res.json({'all songs': 'here'});
+});
+
 app.get('/api/songs/:songId', (req, res) => {
   res.send();
 });
