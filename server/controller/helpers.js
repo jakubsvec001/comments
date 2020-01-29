@@ -1,46 +1,7 @@
-/*
-mysql> describe comments;
-+------------+--------------+------+-----+---------+----------------+
-| Field      | Type         | Null | Key | Default | Extra          |
-+------------+--------------+------+-----+---------+----------------+
-| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
-| song_id    | int(11)      | NO   |     | NULL    |                |
-| user_id    | int(11)      | NO   |     | NULL    |                |
-| track_time | varchar(8)   | YES  |     | NULL    |                |
-| post_date  | datetime     | YES  |     | NULL    |                |
-| comment    | varchar(512) | YES  |     | NULL    |                |
-+------------+--------------+------+-----+---------+----------------+
-6 rows in set (0.01 sec)
+const _ = require('lodash')
+const conn = require('../../database');
 
-mysql> describe sub_comments;
-+-------------------+--------------+------+-----+---------+----------------+
-| Field             | Type         | Null | Key | Default | Extra          |
-+-------------------+--------------+------+-----+---------+----------------+
-| id                | int(11)      | NO   | PRI | NULL    | auto_increment |
-| user_id           | int(11)      | NO   |     | NULL    |                |
-| parent_comment_id | int(11)      | NO   |     | NULL    |                |
-| post_date         | datetime     | YES  |     | NULL    |                |
-| comment           | varchar(512) | YES  |     | NULL    |                |
-+-------------------+--------------+------+-----+---------+----------------+
-5 rows in set (0.00 sec)
-
-mysql> describe users;
-+----------------+--------------+------+-----+---------+----------------+
-| Field          | Type         | Null | Key | Default | Extra          |
-+----------------+--------------+------+-----+---------+----------------+
-| id             | int(11)      | NO   | PRI | NULL    | auto_increment |
-| username       | varchar(64)  | NO   |     | NULL    |                |
-| avatar_url     | varchar(128) | NO   |     | NULL    |                |
-| follower_count | int(11)      | YES  |     | NULL    |                |
-+----------------+--------------+------+-----+---------+----------------+
-4 rows in set (0.00 sec)
-
-*/
-
-const _ = require('lodash');
-const conn = require('../../database/');
-const { getCommentsAndSubcomments } = require('../model/queries')
-
+// a promisifier function around connection.query function
 const queryPromise = (queryString, queryOptions) => {
   return new Promise((resolve, reject) => {
     conn.query(queryString, queryOptions, (err, response, fields) => {
@@ -49,9 +10,10 @@ const queryPromise = (queryString, queryOptions) => {
         resolve(response, fields);
       }
     });
-  });
+  })
 };
 
+// a helper function to parse all the comments and subcomments into a nested json object
 const formatCommentsAndSubcomments = (comment) => {
   const parsed = {
     subCommentIds: comment.subCommentIds.split('>---!---<'),
@@ -63,61 +25,46 @@ const formatCommentsAndSubcomments = (comment) => {
   const subCommentArrays = _.zip(
     parsed.subCommentIds,
     parsed.subUserIds,
+    parsed.parentCommentIds,
     parsed.subCommentPostDates,
     parsed.subCommentComments,
   );
-  const subCommentsObjectsArray = subCommentArrays.map((subComment) => {
-    return {
-      commentId: subComment[0],
-      userId: subComment[1],
-      postDate: subComment[2],
-      comment: subComment[3],
-    };
-  });
+  const subCommentsObjectsArray = subCommentArrays.map((subComment) => ({
+    id: +subComment[0],
+    user_id: +subComment[1],
+    parent_comment_id: +subComment[2],
+    post_date: subComment[3],
+    comment: subComment[4],
+  }));
   const final = {
-    commentId: comment.commentId,
-    songId: comment.songId,
-    userId: comment.userId,
-    trackTime: comment.trackTime,
-    postDate: comment.postDate,
+    id: comment.commentId,
+    song_id: comment.songId,
+    user_id: comment.userId,
+    track_time: comment.trackTime,
+    post_date: comment.postDate,
     comment: comment.comment,
-    subComments: subCommentsObjectsArray,
+    sub_comments: subCommentsObjectsArray,
   };
   return final;
 };
 
-const constructComments = (songId, limit = 10, page = 0) => {
-  /*
-  SELECT c.id, c.song_id, c.user_id, GROUP_CONCAT(sc.comment) FROM comments c
-    JOIN sub_comments sc
-      ON (c.id = sc.parent_comment_id)
-      WHERE c.id = 2
-  GROUP BY c.id
-  ORDER BY c.post_date;
-  */
-
-  const offset = limit * page;
-
-  queryPromise(getCommentsAndSubcomments, [songId.toString(), limit, offset])
-    .then((response) => {
-      // format the input
-      const commentsArray = [];
-      response.forEach((comment) => {
-        commentsArray.push(formatCommentsAndSubcomments(comment));
-      });
-      return commentsArray;
-    })
-    .then((commentsArray) => {
-      // save the input as state here
-      console.log(commentsArray);
-    })
-    .catch((err) => {
-      console.log(err);
+const parseUsersFromComments = (comments) => {
+  const users = new Set();
+  const traverseComments = (nodes) => {
+    nodes.forEach((node) => {
+      users.add(node.user_id);
+      if (node.sub_comments) {
+        traverseComments(node.sub_comments);
+      }
     });
+  };
+  traverseComments(comments);
+  return Array.from(users);
 };
 
-constructComments(9, 3, 1);
 
 module.exports = {
-  constructComments,
+  queryPromise,
+  formatCommentsAndSubcomments,
+  parseUsersFromComments,
 };

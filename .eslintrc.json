@@ -33,5 +33,6 @@
         "jest/prefer-to-have-length": "warn",
         "jest/valid-expect": "error"
     },
-    "ignorePatterns": ["dist/"]
+    "ignorePatterns": ["dist/"],
+    "implicit-arrow-linebreak": ["error", "beside"]
 }
