@@ -3,6 +3,7 @@ import { debounce } from 'lodash';
 import ParentComment from './ParentComment';
 
 const PAGINATION_LIMIT = 2;
+const TO_JOIN = false;
 
 const CommentApp = ({ songId }) => {
   const [commentArray, setCommentArray] = useState([]);
@@ -19,7 +20,7 @@ const CommentApp = ({ songId }) => {
   const populateNextComments = () => {
     setLoading(true);
     fetch(
-      `http://localhost:3000/api/songs/${songId}?page=${nextPagination}&limit=${PAGINATION_LIMIT}&join=true`,
+      `http://localhost:3000/api/songs/${songId}?page=${nextPagination}&limit=${PAGINATION_LIMIT}&join=${TO_JOIN}`,
       {
         method: 'GET',
         mode: 'cors',
