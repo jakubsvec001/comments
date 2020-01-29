@@ -1,4 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import CommentApp from './components/CommentApp'
 
-ReactDOM.render(<div />, document.getElementById('root'));
+
+
+ReactDOM.render(<CommentApp songId={99} />, document.getElementById('root'));
