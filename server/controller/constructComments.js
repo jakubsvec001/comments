@@ -33,6 +33,7 @@ const { getCommentsAndSubcommentsQuery, getParentCommentsQuery } = require('../m
 // create a promise that queries the database and formats the data into a json object
 const constructCommentsWithJoin = (songId, limit, page) => {
   const offset = limit * page;
+  console.log('query for comments:', 'songId', songId, 'limit', limit, 'offset', offset)
   return queryPromise(getCommentsAndSubcommentsQuery, [songId, limit, offset])
     .then((response) => {
       // format the input
@@ -49,15 +50,17 @@ const constructCommentsWithJoin = (songId, limit, page) => {
 
 const constructCommentsWithoutJoin = (songId, limit, page) => {
   const offset = limit * page;
+  console.log('query for comments WITHOUT join:', 'songId', songId, 'limit', limit, 'offset', offset)
   return queryPromise(getParentCommentsQuery, [
     songId,
     limit,
-    page,
+    offset,
   ])
     .then((comments) => {
+      console.log(comments)
       const promises = [];
       comments.forEach((comment) => {
-        promises.push(queryPromise('SELECT * FROM sub_comments WHERE parent_comment_id = ? ORDER BY post_date DESC', [comment.id])
+        promises.push(queryPromise('SELECT * FROM sub_comments WHERE parent_comment_id = ? ORDER BY post_date DESC ', [comment.id])
           .then((subComments) => {
             comment.sub_comments = subComments;
             return comment;
