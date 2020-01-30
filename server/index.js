@@ -5,12 +5,12 @@ const {
   constructCommentsWithJoin,
   constructCommentsWithoutJoin,
 } = require('./controller/constructComments');
-const { constructUsers } = require('./controller/constructUsers')
+const { constructUsers } = require('./controller/constructUsers');
+const { getTotalCommentCountForSong } = require('./controller/getTotalCommentCountForSong');
 const { parseUsersFromComments } = require('./controller/helpers')
 
 const PORT = 3000;
 const PUBLIC = path.resolve(__dirname, '..', 'client', 'dist');
-const LIMIT = 10;
 const app = express();
 
 app.use(express.static(PUBLIC));
@@ -25,7 +25,9 @@ app.get('/api/songs/:songId', (req, res) => {
     res.send('The URL of the get request must possess a query for a pagination number (page=[num]) and a boolean for a join query or unjoined query (join=[false||true]')
   };
   if (Boolean(join)){
-    constructCommentsWithJoin(songId, limit, page)
+    getTotalCommentCountForSong(songId)
+    .then((totalCount) => {
+      constructCommentsWithJoin(songId, limit, page)
       .then((comments) => {
         if (comments.length === 0) res.sendStatus(404);
         return comments;
@@ -33,19 +35,21 @@ app.get('/api/songs/:songId', (req, res) => {
       .then((comments) => {
         const userIdsArray = parseUsersFromComments(comments);
         constructUsers(userIdsArray)
-          .then((users) => {
-            res.json({comments, users})
-          })
-          .catch((err) => {
-            console.log('ERROR:', err)
-          })
+        .then((users) => {
+          res.json({totalCount, comments, users})
+        })
+        .catch((err) => {
+          console.log('ERROR:', err)
+        })
       })
       .catch(() => {
         res.sendStatus(500);
-      });
+      })
+    })
   } else {
-    console.log('success')
-    constructCommentsWithoutJoin(+songId, limit, +page)
+    getTotalCommentCountForSong(songId)
+      .then((totalCount) => {
+      constructCommentsWithoutJoin(+songId, limit, +page)
       .then((comments) => {
         if (comments.length === 0) res.sendStatus(404);
         return comments;
@@ -53,17 +57,17 @@ app.get('/api/songs/:songId', (req, res) => {
       .then((comments) => {
         const userIdsArray = parseUsersFromComments(comments);
         constructUsers(userIdsArray)
-          .then((users) => {
-            console.log('success')
-            res.json({comments, users})
-          })
-          .catch((err) => {
-            console.log('ERROR:', err)
-          })
+        .then((users) => {
+          res.json({comments, users})
+        })
+        .catch((err) => {
+          console.log('ERROR:', err)
+        })
       })
       .catch((err) => {
         console.log('ERROR', err)
       })
+    })
   }
 });
 

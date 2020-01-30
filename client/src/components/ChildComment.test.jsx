@@ -58,6 +58,5 @@ describe('ChildComment Test Suite', () => {
   it('Should format the time into a "timeago" format with plurals', () => {
     const { wrapper } = setup();
     setTimeout(() => {expect(wrapper.find('TimeAgo').dive().text().split(' ').slice(1).join(' ')).toBe('seconds ago')}, 2000)
-    
   });
 });
