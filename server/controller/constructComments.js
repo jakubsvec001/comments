@@ -30,24 +30,6 @@ const _ = require('lodash');
 const { queryPromise, formatCommentsAndSubcomments, parseUsersFromComments } = require('./helpers');
 const { getCommentsAndSubcommentsQuery, getParentCommentsQuery } = require('../model/queries');
 
-// create a promise that queries the database and formats the data into a json object
-const constructCommentsWithJoin = (songId, limit, page) => {
-  const offset = limit * page;
-  console.log('query for comments:', 'songId', songId, 'limit', limit, 'offset', offset)
-  return queryPromise(getCommentsAndSubcommentsQuery, [songId, limit, offset])
-    .then((response) => {
-      // format the input
-      const commentsArray = [];
-      response.forEach((comment) => {
-        commentsArray.push(formatCommentsAndSubcomments(comment));
-      });
-      return commentsArray;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 const constructCommentsWithoutJoin = (songId, limit, page) => {
   const offset = limit * page;
   console.log('query for comments WITHOUT join:', 'songId', songId, 'limit', limit, 'offset', offset)
@@ -79,7 +61,6 @@ const constructCommentsWithoutJoin = (songId, limit, page) => {
   
 
 module.exports = {
-  constructCommentsWithJoin,
   constructCommentsWithoutJoin,
 };
 

@@ -1,16 +1,10 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const {
-  constructCommentsWithJoin,
-  constructCommentsWithoutJoin,
-} = require('./controller/constructComments');
+const { constructCommentsWithoutJoin } = require('./controller/constructComments');
 const { constructUsers } = require('./controller/constructUsers');
-const {
-  getTotalCommentCountForSong,
-} = require('./controller/getTotalCommentCountForSong');
+const { getTotalCommentCountForSong } = require('./controller/getTotalCommentCountForSong');
 const { parseUsersFromComments } = require('./controller/helpers');
-
 const PORT = 3000;
 const PUBLIC = path.resolve(__dirname, '..', 'client', 'dist');
 const app = express();
@@ -28,63 +22,27 @@ app.get('/api/songs/:songId', (req, res) => {
       'The URL of the get request must possess a query for a pagination number (page=[num]) and a boolean for a join query or unjoined query (join=[false||true]',
     );
   }
-  if (join === 'true') {
-    getTotalCommentCountForSong(songId).then((totalCount) => {
-      constructCommentsWithJoin(songId, limit, page)
-        .then((comments) => {
-          if (comments.length === 0) res.sendStatus(404);
-          return comments;
-        })
-        .then((comments) => {
-          console.log(
-            'comments',
-            comments,
-            'totalCount',
-            totalCount,
-            'page',
-            page,
-            'limit',
-            limit,
-          );
-          const userIdsArray = parseUsersFromComments(comments);
-          if (userIdsArray.length === 0) {
-            console.log(comments);
-          }
-          constructUsers(userIdsArray)
-            .then((users) => {
-              res.json({ totalCount, comments, users });
-            })
-            .catch((err) => {
-              console.log('ERROR:', err);
-            });
-        })
-        .catch(() => {
-          res.sendStatus(500);
-        });
-    });
-  } else {
-    getTotalCommentCountForSong(songId).then((totalCount) => {
-      constructCommentsWithoutJoin(+songId, limit, +page)
-        .then((comments) => {
-          console.log('WITHOUT===================================');
-          if (comments.length === 0) res.sendStatus(404);
-          return comments;
-        })
-        .then((comments) => {
-          const userIdsArray = parseUsersFromComments(comments);
-          constructUsers(userIdsArray)
-            .then((users) => {
-              res.json({ totalCount, comments, users });
-            })
-            .catch((err) => {
-              console.log('ERROR:', err);
-            });
-        })
-        .catch((err) => {
-          console.log('ERROR', err);
-        });
-    });
-  }
+  getTotalCommentCountForSong(songId).then((totalCount) => {
+    constructCommentsWithoutJoin(+songId, limit, +page)
+      .then((comments) => {
+        console.log('WITHOUT===================================');
+        if (comments.length === 0) res.sendStatus(404);
+        return comments;
+      })
+      .then((comments) => {
+        const userIdsArray = parseUsersFromComments(comments);
+        constructUsers(userIdsArray)
+          .then((users) => {
+            res.json({ totalCount, comments, users });
+          })
+          .catch((err) => {
+            console.log('ERROR:', err);
+          });
+      })
+      .catch((err) => {
+        console.log('ERROR', err);
+      });
+  });
 });
 
 app.listen(PORT, () => {

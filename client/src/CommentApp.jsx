@@ -105,7 +105,7 @@ const CommentApp = ({ songId }) => {
   return (
     // for each grouped array of comments in state (indexed by their pagination number), create a <CommentList /> element with props
     <div className="comment-list">
-      <p>xx,xxx comments</p>
+      <p>{totalCommentsAvailable} comments</p>
       <hr />
       {(() => {
         {
