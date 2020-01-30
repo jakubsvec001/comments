@@ -2,7 +2,6 @@ import React from 'react';
 import TimeAgo from 'react-timeago';
 import ChildComment from './ChildComment';
 
-
 const formatter = (value, unit, suffix) => {
   if (+value > 1) unit = unit + 's'; 
   return `${value} ${unit} ago`
@@ -26,7 +25,6 @@ const ParentComment = ({ parentComment, allUsers }) => {
       );
     });
   };
-
   return (
     <div>
       <div>

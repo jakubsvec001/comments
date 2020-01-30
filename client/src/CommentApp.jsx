@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
-import ParentComment from './ParentComment';
+import ParentComment from './components/ParentComment';
 
 const PAGINATION_LIMIT = 2;
 const TO_JOIN = false;

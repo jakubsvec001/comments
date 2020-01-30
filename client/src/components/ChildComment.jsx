@@ -13,6 +13,7 @@ const ChildComment = ({childComment, parentTrackTime, allUsers}) => {
   const styles = {
     marginLeft: "3em",
   }
+
   return (
     <div style={styles}>
       <div>CHILD COMMENT</div>
@@ -20,7 +21,7 @@ const ChildComment = ({childComment, parentTrackTime, allUsers}) => {
       <div className="user-name">{username}</div>
       <div className="track-time">{parentTrackTime}</div>
       <div className="comment">{comment}</div>
-      <TimeAgo date={post_date} formatter={formatter}/>
+      <TimeAgo className='timeago' date={post_date} formatter={formatter}/>
       <div className="reply-btn">REPLY</div>
     </div>
   )
