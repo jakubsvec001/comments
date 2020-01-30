@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
-import ParentComment from './components/ParentComment';
+import ParentComment from './ParentComment';
 
 const PAGINATION_LIMIT = 10;
 const TO_JOIN = false;
@@ -88,8 +88,9 @@ const CommentApp = ({ songId }) => {
         console.log('Comments left: ', commentsRemaining);
       }
     }
-  }, 1000);
+  }, 500);
 
+  
   // When App mounts, fetch the page 0 of pagination and add
   // comments and users to state
   useEffect(() => {
@@ -108,13 +109,7 @@ const CommentApp = ({ songId }) => {
       <p>{totalCommentsAvailable} comments</p>
       <hr />
       {(() => {
-        {
-          /* if (commentArray.length === nextPagination * PAGINATION_LIMIT) { */
-        }
         return commentArray;
-        {
-          /* } */
-        }
       })()}
       {isLoading()}
     </div>

@@ -25,7 +25,6 @@ app.get('/api/songs/:songId', (req, res) => {
   getTotalCommentCountForSong(songId).then((totalCount) => {
     constructCommentsWithoutJoin(+songId, limit, +page)
       .then((comments) => {
-        console.log('WITHOUT===================================');
         if (comments.length === 0) res.sendStatus(404);
         return comments;
       })
