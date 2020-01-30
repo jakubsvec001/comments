@@ -71,8 +71,9 @@ const CommentApp = ({ songId }) => {
 
   return (
     // for each grouped array of comments in state (indexed by their pagination number), create a <CommentList /> element with props
-    <div>
+    <div className="comment-list">
       <p>xx,xxx comments</p>
+      <hr />
       {(() => {
         if (commentArray.length === nextPagination * PAGINATION_LIMIT) {
           return commentArray;

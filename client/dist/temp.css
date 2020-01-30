@@ -1,0 +1,67 @@
+.comment-list {
+  margin: 0;
+  color: #333;
+  font-family: Verdana,Tahoma,sans-serif;
+  max-width: 659px;
+  min-width: 600px;
+  font-size: 12px; 
+  box-sizing: border-box;
+}
+
+.comment-container {
+  margin: 0;
+  margin-bottom: 2em;
+  display: grid;
+  grid-template-columns: 50px, auto, 200px;
+  grid-template-rows: 30px, auto;
+  grid-column-gap: 1em;
+  grid-template-areas: 
+  "avatar data timeago"
+  "avatar comment reply";
+  justify-content: stretch
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  grid-area: avatar
+}
+
+.reply-btn {
+  border: 1px lightgray solid;
+  height: 20px;
+  max-width: 70px;
+  border-radius: 4px;
+  background-color: lightgray;
+  grid-area: reply;
+}
+
+.reply-btn:hover {
+  border: 1px gray solid;
+}
+
+.track-time {
+  grid-area: data;
+  color: gray;
+}
+
+.user-name {
+  grid-area: data;
+  color: gray;
+}
+
+.comment {
+  grid-area: comment;
+}
+
+.timeago {
+  grid-area: timeago;
+  font-size: 11px;
+  color: gray;
+}
+
+.child-comment {
+  color: black;
+  margin-left: 20px;
+}

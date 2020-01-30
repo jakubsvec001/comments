@@ -27,13 +27,13 @@ const ParentComment = ({ parentComment, allUsers }) => {
   };
   return (
     <div>
-      <div>
+      <div className='parent-comment comment-container'>
         <img className="avatar" src={avatar_url} />
         <div className="user-name">{username}</div>
         <div className="track-time">{track_time}</div>
         <div className="comment">{comment}</div>
-        <TimeAgo date={post_date} formatter={formatter}/>
-        <div className="reply-btn">REPLY</div>
+        <TimeAgo className="timeago" date={post_date} formatter={formatter}/>
+        <div className="reply-btn">Reply</div>
       </div>
       {makeChildComments(parentComment)}
     </div>
