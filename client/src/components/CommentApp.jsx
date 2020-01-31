@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
 import ParentComment from './ParentComment';
+import { Spinner } from 'styled-icons/evil'
+import { Comment } from 'styled-icons/boxicons-solid'
 
 const PAGINATION_LIMIT = 10;
 const TO_JOIN = false;
@@ -94,14 +96,18 @@ const CommentApp = ({ songId }) => {
 
   const isLoading = () => {
     if (loading) {
-      return <h3>LOADING...</h3>;
-    }
+      return (
+        <div className='spinner-container'>
+          <Spinner className='spinner'/>
+        </div>
+      )
+    }[]
   };
 
   return (
     // for each grouped array of comments in state (indexed by their pagination number), create a <CommentList /> element with props
     <div className="comment-list">
-      <p>{totalCommentsAvailable} comments</p>
+      <Comment className='comment-icon'/><span> {totalCommentsAvailable} comments </span>
       <hr />
       {(() => {
         return commentArray;

@@ -22,6 +22,5 @@ describe('CommentApp Test Suite', () => {
   });
   it('Should fetch comment data from songs comments API', () => {
     const { wrapper } = setup();
-    console.log('wrapper~~~~~~~~~~~~~~~~~~~~~~~~', wrapper)
   });
 });
