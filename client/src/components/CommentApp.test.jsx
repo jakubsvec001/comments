@@ -1,69 +1,81 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import nock from 'nock';
 
 import CommentApp from './CommentApp';
 
+const mockServerData_ParentComment = {
+  totalCount: 2,
+  comments: [
+    {
+      comment: "Quidem distinctio facilis placeat quo molestiae. Aut sunt deleniti rerum consectetur. Officiis est a. Nostrum nisi voluptas aut inventore eum quaerat ipsum.",
+      id: 4921,
+      post_date: "2020-02-11T23:58:51.000Z",
+      song_id: 5,
+      sub_comments: {
+        comment: "Doloribus ratione sit a doloremque aspernatur. Omnis sed quia quis doloremque voluptas quas itaque. Deleniti nisi commodi dolores architecto ratione impedit. Vero labore voluptatem deserunt at eligendi assumenda voluptas.",
+        id: 3646,
+        parent_comment_id: 4921,
+        post_date: "2019-09-26T02:25:01.000Z",
+        user_id: 68,  // USER 68
+      },
+      track_time: "2:34",
+      user_id: 74, // USER 74
+    },
+    {
+      comment: "Et enim reiciendis. Nobis quas aut voluptatem et. Est error ducimus enim dolorum est expedita. Et temporibus vitae eaque aperiam voluptate quia. Sequi praesentium eaque porro ut possimus quasi reiciendis et.",
+      id: 95,
+      post_date: "2020-01-25T07:35:28.000Z",
+      song_id: 5,
+      sub_comments: [],
+      track_time: "3:13",
+      user_id: 26, // USER 26
+    },
+  ],
+  users: [
+    {
+      avatar_url: "https://s3.amazonaws.com/uifaces/faces/twitter/donjain/128.jpg",
+      follower_count: 0,
+      id: 74,
+      username: "Lance Quigley",
+    },
+    {
+      avatar_url: "https://s3.amazonaws.com/uifaces/faces/twitter/mandalareopens/128.jpg",
+      follower_count: 43,
+      id: 68,
+      username: "Jerel Runte",
+    },
+    {
+      avatar_url: "https://s3.amazonaws.com/uifaces/faces/twitter/iamkarna/128.jpg",
+      follower_count: 70,
+      id: 26,
+      username: "Dexter Bosco",
+    },
+  ]
+}
+
+console.log(mockServerData_ParentComment)
+
 function setup() {
   const props = {
-    parentComment: {
-      comment: "Assumenda quod rerum. Deleniti esse ipsum nihil aut quaerat reiciendis. Nihil at sequi voluptatem minus fuga facere praesentium voluptatibus voluptas. Ut sunt minima ex rerum facilis illo.",
-      id: 2660,
-      post_date: new Date(),
-      song_id: 99,
-      track_time: "2:00",
-      user_id: 62,
-      sub_comments: [
-        {
-          comment: "Iste quis eos quibusdam pariatur reprehenderit. Incidunt tenetur ducimus. Omnis omnis perferendis velit illum. Sit fuga provident eveniet enim velit dolores. Cupiditate voluptatum quia omnis et repudiandae doloremque repellendus iste. Suscipit nesciunt et et veritatis soluta similique nisi aut.",
-          id: 3621,
-          parent_comment_id: 2660,
-          post_date: "2019-08-16 12:36:22",
-          user_id: 68,
-        }
-      ],
-    },
-    allUsers: {
-      62: {
-        id: 62,
-        username: 'John Ham',
-        avatar_url:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/picard102/128.jpg',
-        follower_count: 3,
-      },
-    },
+    songId: 1
   }
   const wrapper = shallow(
-    <ParentComment
-      parentComment={props.parentComment}
-      allUsers={props.allUsers}
+    <CommentApp
+      songId = {props.songId}
     />,
   );
   return { wrapper, props };
 }
 
-describe('Parent Comment Test Suite', () => {
+describe('CommentApp Test Suite', () => {
+  beforeAll(() => {
+    nock('http:127.0.0.1:3000/api/songs/1')
+  })
   it('Should have an image', () => {
     const { wrapper } = setup();
     expect(wrapper.find('.avatar').prop('src')).toBe(
       'https://s3.amazonaws.com/uifaces/faces/twitter/picard102/128.jpg',
     );
   });
-  it('Should have a username', () => {
-    const { wrapper } = setup();
-    expect(wrapper.find('.user-name').text()).toBe('John Ham');
-  });
-  it('Should have a comment to render', () => {
-    const { wrapper } = setup();
-    expect(wrapper.find('.comment').text()).toBe(
-      "Assumenda quod rerum. Deleniti esse ipsum nihil aut quaerat reiciendis. Nihil at sequi voluptatem minus fuga facere praesentium voluptatibus voluptas. Ut sunt minima ex rerum facilis illo.",
-    );
-  });
-  it('Should format the time into a "timeago" format', () => {
-    const { wrapper } = setup();
-    expect(wrapper.find('TimeAgo').dive().text().split(' ').slice(1).join(' ')).toBe('second ago');
-  });
-  it('Should format the time into a "timeago" format with plurals', () => {
-    const { wrapper } = setup();
-    setTimeout(() => {expect(wrapper.find('TimeAgo').dive().text().split(' ').slice(1).join(' ')).toBe('seconds ago')}, 2000)
-  });
-})
+});

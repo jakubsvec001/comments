@@ -5,6 +5,18 @@ import ParentComment from './ParentComment';
 const PAGINATION_LIMIT = 10;
 const TO_JOIN = false;
 
+const makeParentComments = (commentGroup, userObject) => {
+  return commentGroup.map((parentComment) => {
+    return (
+      <ParentComment
+        key={parentComment.id}
+        parentComment={parentComment}
+        allUsers={userObject}
+      />
+    );
+  });
+};
+
 const CommentApp = ({ songId }) => {
   const [commentArray, setCommentArray] = useState([]);
   const [nextPagination, setNextPagination] = useState(0);
@@ -13,18 +25,6 @@ const CommentApp = ({ songId }) => {
   const [commentsRemaining, setCommentsRemaining] = useState(0);
   const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(false);
-
-  const makeParentComments = (commentGroup, userObject) => {
-    return commentGroup.map((parentComment) => {
-      return (
-        <ParentComment
-          key={parentComment.id}
-          parentComment={parentComment}
-          allUsers={userObject}
-        />
-      );
-    });
-  };
 
   const populateNextComments = () => {
     setLoading(true);
@@ -37,6 +37,7 @@ const CommentApp = ({ songId }) => {
     )
       .then((stream) => stream.json())
       .then((data) => {
+        console.log(data)
         if (firstLoad) {
           setTotalCommentsAvailable(data.totalCount);
           setCommentsRemaining(data.totalCount - data.comments.length);
@@ -62,12 +63,6 @@ const CommentApp = ({ songId }) => {
       })
       .catch((err) => console.log(err));
   };
-  console.log(
-    'total comments available',
-    totalCommentsAvailable,
-    'comments remaining',
-    commentsRemaining,
-  );
 
   window.onscroll = debounce(() => {
     // if already loading, exit
