@@ -72,7 +72,7 @@ const CommentApp = ({ songId }) => {
       return;
     }
     if (
-      Math.ceil(window.innerHeight + document.documentElement.scrollTop) <=
+      Math.ceil(window.innerHeight + document.documentElement.scrollTop) >=
       document.documentElement.offsetHeight
     ) {
       console.log(commentsRemaining);
@@ -83,7 +83,7 @@ const CommentApp = ({ songId }) => {
         console.log('Comments left: ', commentsRemaining);
       }
     }
-  }, 500);
+  }, 500, {leading: true});
 
   
   // When App mounts, fetch the page 0 of pagination and add

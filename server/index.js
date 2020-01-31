@@ -32,6 +32,7 @@ app.get('/api/songs/:songId', (req, res) => {
         const userIdsArray = parseUsersFromComments(comments);
         constructUsers(userIdsArray)
           .then((users) => {
+            console.log({ totalCount, comments, users })
             res.json({ totalCount, comments, users });
           })
           .catch((err) => {

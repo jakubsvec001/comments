@@ -32,14 +32,12 @@ const { getCommentsAndSubcommentsQuery, getParentCommentsQuery } = require('../m
 
 const constructCommentsWithoutJoin = (songId, limit, page) => {
   const offset = limit * page;
-  console.log('query for comments WITHOUT join:', 'songId', songId, 'limit', limit, 'offset', offset)
   return queryPromise(getParentCommentsQuery, [
     songId,
     limit,
     offset,
   ])
     .then((comments) => {
-      console.log(comments)
       const promises = [];
       comments.forEach((comment) => {
         promises.push(queryPromise('SELECT * FROM sub_comments WHERE parent_comment_id = ? ORDER BY post_date DESC ', [comment.id])
