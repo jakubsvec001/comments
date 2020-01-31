@@ -31,14 +31,14 @@ const ParentComment = ({ parentComment, allUsers }) => {
   return (
     <div>
       <div className='parent-comment comment-container' onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
-        <img className="avatar" src={avatar_url} />
-        <div className="user-data">
+        <img className="avatar pointer-cursor" src={avatar_url} />
+        <div className="user-data pointer-cursor">
           <span className="user-name">{username}</span><span className='at'> at </span>
           <span className="track-time"> {track_time}</span>
         </div>
         <div className="comment">{comment}</div>
         <TimeAgo className="timeago" date={post_date} formatter={formatter}/>
-        {hovered && <div className="reply-btn" ><Reply className="reply-icon"/> Reply</div>}
+        {hovered && <div className="reply-btn pointer-cursor" ><Reply className="reply-icon"/> Reply</div>}
       </div>
       {makeChildComments(parentComment)}
     </div>

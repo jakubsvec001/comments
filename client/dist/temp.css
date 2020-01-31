@@ -16,7 +16,7 @@ body {
 }
 
 .comment-container {
-  margin-bottom: 2em;
+  padding-bottom: 2em;
   display: grid;
   grid-template-columns: 40px 1fr 90px;
   grid-template-rows: 1.6em auto;
@@ -37,6 +37,7 @@ body {
 .reply-btn {
   border: 1px #999999 solid;
   justify-self: end;
+  align-self: flex-end;
   height: 20px;
   width: 50px;
   max-width: 70px;
@@ -119,4 +120,8 @@ body {
 
 .user-data {
   margin-left: 1em
+}
+
+.pointer-cursor {
+  cursor: pointer; 
 }
