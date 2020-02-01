@@ -2,3 +2,4 @@ comments.bundle.js
 node_modules/
 *\.sql
 coverage/
+*\.map

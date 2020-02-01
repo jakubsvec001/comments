@@ -1,40 +1,47 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ChildComment from './ChildComment';
+import ParentComment from './ParentComment';
 
 function setup() {
   const props = {
-    childComment: {
-      id: 3621,
-      user_id: 68,
-      parent_comment_id: 2660,
+    parentComment: {
+      comment: "Assumenda quod rerum. Deleniti esse ipsum nihil aut quaerat reiciendis. Nihil at sequi voluptatem minus fuga facere praesentium voluptatibus voluptas. Ut sunt minima ex rerum facilis illo.",
+      id: 2660,
       post_date: new Date(),
-      comment:
-        'Iste quis eos quibusdam pariatur reprehenderit. In…sciunt et et veritatis soluta similique nisi aut.',
+      song_id: 99,
+      track_time: "2:00",
+      user_id: 62,
+      sub_comments: [
+        {
+          comment: "Iste quis eos quibusdam pariatur reprehenderit. Incidunt tenetur ducimus. Omnis omnis perferendis velit illum. Sit fuga provident eveniet enim velit dolores. Cupiditate voluptatum quia omnis et repudiandae doloremque repellendus iste. Suscipit nesciunt et et veritatis soluta similique nisi aut.",
+          id: 3621,
+          parent_comment_id: 2660,
+          post_date: "2019-08-16 12:36:22",
+          user_id: 68,
+        }
+      ],
     },
-    parentTrackTime: '2:00',
     allUsers: {
-      68: {
-        id: 68,
+      62: {
+        id: 62,
         username: 'John Ham',
         avatar_url:
           'https://s3.amazonaws.com/uifaces/faces/twitter/picard102/128.jpg',
         follower_count: 3,
       },
     },
-  };
+  }
   const wrapper = shallow(
-    <ChildComment
-      childComment={props.childComment}
-      trackTime={props.trackTime}
+    <ParentComment
+      parentComment={props.parentComment}
       allUsers={props.allUsers}
     />,
   );
   return { wrapper, props };
 }
 
-describe('ChildComment Test Suite', () => {
+describe('Parent Comment Test Suite', () => {
   it('Should have an image', () => {
     const { wrapper } = setup();
     expect(wrapper.find('.avatar').prop('src')).toBe(
@@ -48,7 +55,7 @@ describe('ChildComment Test Suite', () => {
   it('Should have a comment to render', () => {
     const { wrapper } = setup();
     expect(wrapper.find('.comment').text()).toBe(
-      'Iste quis eos quibusdam pariatur reprehenderit. In…sciunt et et veritatis soluta similique nisi aut.',
+      "Assumenda quod rerum. Deleniti esse ipsum nihil aut quaerat reiciendis. Nihil at sequi voluptatem minus fuga facere praesentium voluptatibus voluptas. Ut sunt minima ex rerum facilis illo.",
     );
   });
   it('Should format the time into a "timeago" format', () => {
@@ -59,4 +66,4 @@ describe('ChildComment Test Suite', () => {
     const { wrapper } = setup();
     setTimeout(() => {expect(wrapper.find('TimeAgo').dive().text().split(' ').slice(1).join(' ')).toBe('seconds ago')}, 2000)
   });
-});
+})

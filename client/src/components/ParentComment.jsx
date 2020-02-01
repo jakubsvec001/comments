@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 import ChildComment from './ChildComment';
-
+import { Reply } from 'styled-icons/remix-fill';
 
 const formatter = (value, unit, suffix) => {
   if (+value > 1) unit = unit + 's'; 
@@ -9,11 +9,13 @@ const formatter = (value, unit, suffix) => {
 }
 
 const ParentComment = ({ parentComment, allUsers }) => {
-
   
   const { user_id, track_time, post_date, comment } = parentComment;
   const { username, follower_count, avatar_url } = allUsers[user_id]
 
+  const [ hovered, setHovered ] = useState(false);
+  const toggleHover = () => setHovered(!hovered);
+  
   const makeChildComments = (parentComment) => {
     return parentComment.sub_comments.map((childComment) => {
       return (
@@ -26,16 +28,17 @@ const ParentComment = ({ parentComment, allUsers }) => {
       );
     });
   };
-
   return (
     <div>
-      <div>
-        <img className="avatar" src={avatar_url} />
-        <div className="user-name">{username}</div>
-        <div className="track-time">{track_time}</div>
+      <div className='parent-comment comment-container' onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
+        <img className="avatar pointer-cursor" src={avatar_url} />
+        <div className="user-data pointer-cursor">
+          <span className="user-name">{username}</span><span className='at'> at </span>
+          <span className="track-time"> {track_time}</span>
+        </div>
         <div className="comment">{comment}</div>
-        <TimeAgo date={post_date} formatter={formatter}/>
-        <div className="reply-btn">REPLY</div>
+        <TimeAgo className="timeago" date={post_date} formatter={formatter}/>
+        {hovered && <div className="reply-btn pointer-cursor" ><Reply className="reply-icon"/> Reply</div>}
       </div>
       {makeChildComments(parentComment)}
     </div>

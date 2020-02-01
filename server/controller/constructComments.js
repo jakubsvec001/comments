@@ -30,34 +30,17 @@ const _ = require('lodash');
 const { queryPromise, formatCommentsAndSubcomments, parseUsersFromComments } = require('./helpers');
 const { getCommentsAndSubcommentsQuery, getParentCommentsQuery } = require('../model/queries');
 
-// create a promise that queries the database and formats the data into a json object
-const constructCommentsWithJoin = (songId, limit, page) => {
-  const offset = limit * page;
-  return queryPromise(getCommentsAndSubcommentsQuery, [songId, limit, offset])
-    .then((response) => {
-      // format the input
-      const commentsArray = [];
-      response.forEach((comment) => {
-        commentsArray.push(formatCommentsAndSubcomments(comment));
-      });
-      return commentsArray;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 const constructCommentsWithoutJoin = (songId, limit, page) => {
   const offset = limit * page;
   return queryPromise(getParentCommentsQuery, [
     songId,
     limit,
-    page,
+    offset,
   ])
     .then((comments) => {
       const promises = [];
       comments.forEach((comment) => {
-        promises.push(queryPromise('SELECT * FROM sub_comments WHERE parent_comment_id = ? ORDER BY post_date DESC', [comment.id])
+        promises.push(queryPromise('SELECT * FROM sub_comments WHERE parent_comment_id = ? ORDER BY post_date DESC ', [comment.id])
           .then((subComments) => {
             comment.sub_comments = subComments;
             return comment;
@@ -76,7 +59,6 @@ const constructCommentsWithoutJoin = (songId, limit, page) => {
   
 
 module.exports = {
-  constructCommentsWithJoin,
   constructCommentsWithoutJoin,
 };
 
