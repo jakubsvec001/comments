@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
-import ParentComment from './ParentComment';
-import { Spinner } from 'styled-icons/evil'
-import { Comment } from 'styled-icons/boxicons-solid'
+import CommentItem from './CommentItem';
+import { Spinner as SpinnerIcon } from 'styled-icons/evil'
+import { Comment as CommentIcon } from 'styled-icons/boxicons-solid'
 
 const PAGINATION_LIMIT = 10;
 const TO_JOIN = false;
 
-const makeParentComments = (commentGroup, userObject) => {
-  return commentGroup.map((parentComment) => {
+const makeCommentItems = (comments, userObject) => {
+  return comments.map((comment) => {
     return (
-      <ParentComment
-        key={parentComment.id}
-        parentComment={parentComment}
+      <CommentItem
+        key={comment.id}
+        parentComment={comment}
         allUsers={userObject}
       />
     );
@@ -39,7 +39,6 @@ const CommentApp = ({ songId }) => {
     )
       .then((stream) => stream.json())
       .then((data) => {
-        console.log(data)
         if (firstLoad) {
           setTotalCommentsAvailable(data.totalCount);
           setCommentsRemaining(data.totalCount - data.comments.length);
@@ -56,7 +55,7 @@ const CommentApp = ({ songId }) => {
           return usersObject;
         });
         setCommentArray(() => {
-          const newComments = makeParentComments(data.comments, usersObject);
+          const newComments = makeCommentItems(data.comments, usersObject);
           setTimeout(() => {
             setLoading(false);
           }, 200);
@@ -87,7 +86,6 @@ const CommentApp = ({ songId }) => {
     }
   }, 500, {leading: true});
 
-  
   // When App mounts, fetch the page 0 of pagination and add
   // comments and users to state
   useEffect(() => {
@@ -98,7 +96,7 @@ const CommentApp = ({ songId }) => {
     if (loading) {
       return (
         <div className='spinner-container'>
-          <Spinner className='spinner'/>
+          <SpinnerIcon className='spinner'/>
         </div>
       )
     }[]
@@ -107,11 +105,9 @@ const CommentApp = ({ songId }) => {
   return (
     // for each grouped array of comments in state (indexed by their pagination number), create a <CommentList /> element with props
     <div className="comment-list">
-      <Comment className='comment-icon'/><span> {totalCommentsAvailable} comments </span>
+      <CommentIcon className='comment-icon'/><span> {totalCommentsAvailable} comments </span>
       <hr />
-      {(() => {
-        return commentArray;
-      })()}
+      {commentArray}
       {isLoading()}
     </div>
   );
