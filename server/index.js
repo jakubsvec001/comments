@@ -32,6 +32,7 @@ app.get('/api/songs/:songId', (req, res) => {
         const userIdsArray = parseUsersFromComments(comments);
         constructUsers(userIdsArray)
           .then((users) => {
+            // setTimeout(()=> res.json({ totalCount, comments, users }), 2000)  // Simulate delay
             res.json({ totalCount, comments, users });
           })
           .catch((err) => {
