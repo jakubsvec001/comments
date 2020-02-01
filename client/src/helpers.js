@@ -10,7 +10,7 @@ import CommentItem from './components/CommentItem';
 const makeCommentItems = (comments, userObject) => {
   return comments.map((comment) => {
     return (
-      <CommentItem
+      <CommentItem data-test='comment-item'
         key={comment.id}
         parentComment={comment}
         allUsers={userObject}
