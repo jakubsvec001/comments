@@ -6,7 +6,7 @@
   "env": {
     "production": {
       "plugins": [
-        "react-remove-properties"
+        "react-remove-properties", {"properties": ["data-test"]}
       ]
     }
   }

@@ -1,10 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import nock from 'nock';
-import { mockServerData_ParentComment_51, mockServerData_ParentComment_2 } from './testHelpers';
+import {
+  mockServerData_ParentComment_51,
+  mockServerData_ParentComment_2,
+} from './testHelpers';
 
 import CommentApp from './CommentApp';
-
 
 function setup() {
   const props = {
