@@ -7,7 +7,7 @@ const CommentItem = ({ parentComment, allUsers }) => {
     return parentComment.sub_comments.map((childComment) => {
       childComment.track_time = parentComment.track_time
       return (
-        <CommentComponent
+        <CommentComponent data-test='comment-component-child'
           key={childComment.id}
           commentObject={childComment}
           allUsers={allUsers}
@@ -19,7 +19,7 @@ const CommentItem = ({ parentComment, allUsers }) => {
 
   return (
     <div>
-      <CommentComponent commentObject={parentComment} allUsers={allUsers}/>
+      <CommentComponent data-test='comment-component-parent'commentObject={parentComment} allUsers={allUsers}/>
       {makeChildComments(parentComment)}
     </div>
   );

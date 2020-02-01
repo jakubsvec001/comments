@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
-import CommentItem from './CommentItem';
 import {
   SpinnerContainer,
   SpinnerIcon,
@@ -9,13 +8,11 @@ import {
 } from './styles/CommentAppStyled';
 import { fetchPagination, makeCommentItems } from '../helpers';
 
-
 /**
  * 
  * @param {integer} songId - the id of the song selected, to be retrieved from server
  * @return {ReactComponent} Containing a list of paginating comments for provided songId
  */
-
 const CommentApp = ({ songId }) => {
   const [commentArray, setCommentArray] = useState([]);
   const [nextPagination, setNextPagination] = useState(0);
@@ -100,16 +97,17 @@ const CommentApp = ({ songId }) => {
   const isLoading = () => {
     if (loading) {
       return (
-        <SpinnerContainer>
-          <SpinnerIcon className='spinner'/>
+        <SpinnerContainer data-test="spinner-container">
+          <SpinnerIcon data-test="spinner-icon"className='spinner'/>
         </SpinnerContainer>
       )
     }[]
   };
   
   return (
-    <CommentList data-test="CommentList" className="comment-list">
-      <CommentIcon data-test="comment-icon" className='comment-icon'/><span> {totalCommentsAvailable} comments</span>
+    <CommentList data-test="comment-list">
+      <CommentIcon data-test="comment-icon"/>
+        <span> {totalCommentsAvailable} comments</span>
       <hr />
       {commentArray}
       {isLoading()}

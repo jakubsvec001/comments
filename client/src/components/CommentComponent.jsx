@@ -26,23 +26,23 @@ const CommentComponent = ({ commentObject, allUsers, child}) => {
   const isHover = () => setHovered(true);
   const isNotHover = () => setHovered(false);
   
-  const CommentDiv =styled.div`
+  const ChildContainer = styled.div`
   margin-left: ${child && "2em"};
   `
 
   return (
-    <CommentDiv>
-      <CommentContainer onMouseEnter={isHover} onMouseLeave={isNotHover}>
-        <Avatar src={avatar_url} />
-        <UserDataDiv>
+    <ChildContainer data-test='comment-div'>
+      <CommentContainer data-test='comment-container' onMouseEnter={isHover} onMouseLeave={isNotHover}>
+        <Avatar data-test='avatar' src={avatar_url} />
+        <UserDataDiv data-test='user-data-div'>
           <span >{username}</span><AtSpan> at </AtSpan>
           <span> {track_time}</span>
         </UserDataDiv>
-        <CommentText>{comment}</CommentText>
-        <TimeAgoStyled date={post_date} formatter={formatter}/>
-        {hovered && <ReplyBtn><ReplyIcon/> Reply</ReplyBtn>}
+        <CommentText data-test='comment-text'>{comment}</CommentText>
+        <TimeAgoStyled data-test='time-ago-styled'date={post_date} formatter={formatter}/>
+        {hovered && <ReplyBtn data-test='reply-btn'><ReplyIcon/> Reply</ReplyBtn>}
       </CommentContainer>
-    </CommentDiv>
+    </ChildContainer>
   );
 };
 
