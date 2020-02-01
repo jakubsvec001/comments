@@ -10,13 +10,12 @@ const formatter = (value, unit, suffix) => {
 
 const CommentComponent = ({ commentObject, allUsers, child}) => {
 
-  
   const { user_id, track_time, post_date, comment } = commentObject;
   const { username, follower_count, avatar_url } = allUsers[user_id];
 
-
   const [ hovered, setHovered ] = useState(false);
-  const toggleHover = () => setHovered(!hovered);
+  const isHover = () => setHovered(true);
+  const isNotHover = () => setHovered(false);
 
   //Styles
   const CommentDiv = styled.div`
@@ -79,7 +78,7 @@ const CommentComponent = ({ commentObject, allUsers, child}) => {
 
   return (
     <CommentDiv>
-      <CommentContainer onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
+      <CommentContainer onMouseEnter={isHover} onMouseLeave={isNotHover}>
         <Avatar src={avatar_url} />
         <UserDataDiv>
           <span >{username}</span><AtSpan> at </AtSpan>
