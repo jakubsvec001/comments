@@ -9,9 +9,7 @@ import {
   CommentContainer,
   Avatar,
   AtSpan,
-} from './styles/CommentComponentStyles';
-
-console.log(TimeAgoStyled)
+} from './styles/CommentComponentStyled';
 
 const formatter = (value, unit, suffix) => {
   if (+value > 1) unit = unit + 's'; 

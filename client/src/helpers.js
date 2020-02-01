@@ -1,68 +1,36 @@
 import React from 'react';
-import ParentComment from './components/ParentComment';
+import CommentItem from './components/CommentItem';
 
-const makeParentComments = (commentGroup, userObject) => {
-  return commentGroup.map((parentComment) => {
+/**
+ * Creates React Components <CommentItem /> to be placed in CommentApp Component state 
+ * @param {array} comments- comments retrieved from server
+ * @param {object} userObject - users retrieved from server
+ * @return {array} - an array of <CommentItem /> components
+ */
+const makeCommentItems = (comments, userObject) => {
+  return comments.map((comment) => {
     return (
-      <ParentComment
-        key={parentComment.id}
-        parentComment={parentComment}
+      <CommentItem
+        key={comment.id}
+        parentComment={comment}
         allUsers={userObject}
       />
     );
   });
 };
 
-const populateNextComments = (
-  songId,
-  PAGINATION_LIMIT,
-  TO_JOIN,
-  commentArray,
-  setCommentArray,
-  nextPagination,
-  setNextPagination,
-  setTotalCommentsAvailable,
-  firstLoad,
-  setFirstLoad,
-  commentsRemaining,
-  setCommentsRemaining,
-  setUsers,
-  setLoading) => {
-    console.log(setLoading)
-  setLoading(true);
-  fetch(
-    `http://localhost:3000/api/songs/${songId}?page=${nextPagination}&limit=${PAGINATION_LIMIT}&join=${TO_JOIN}`,
-    {
-      method: 'GET',
-      mode: 'cors',
-    },
-  )
-    .then((stream) => stream.json())
-    .then((data) => {
-      if (firstLoad) {
-        setTotalCommentsAvailable(data.totalCount);
-        setCommentsRemaining(data.totalCount - data.comments.length);
-        setFirstLoad(false);
-      } else {
-        setCommentsRemaining(commentsRemaining - data.comments.length);
-      }
-      setNextPagination(nextPagination + 1);
-      const usersObject = {};
-      data.users.forEach((user) => {
-        usersObject[user.id] = user;
-      });
-      setUsers(() => {
-        return usersObject;
-      });
-      setCommentArray(() => {
-        const newComments = makeParentComments(data.comments, usersObject);
-        setTimeout(() => {
-          setLoading(false);
-        }, 200);
-        return [...commentArray, ...newComments];
-      });
-    })
-    .catch((err) => console.log(err));
-};
+/**
+ * A PROMISE that resolves with data served by the backend
+ * @param {integer} songId - selects the song the server will use in its database query
+ * @param {integer} nextPagination - used to offset the results from the server's database query
+ * @param {integer} PAGINATION_LIMIT - used to limit the results from the server's database query 
+ */
+const fetchPagination = (songId, nextPagination, PAGINATION_LIMIT) => fetch(
+  `http://localhost:3000/api/songs/${songId}?page=${nextPagination}&limit=${PAGINATION_LIMIT}&join=false`,
+  {
+    method: 'GET',
+    mode: 'cors',
+  },
+)
 
-export { populateNextComments };
+export { fetchPagination, makeCommentItems };
