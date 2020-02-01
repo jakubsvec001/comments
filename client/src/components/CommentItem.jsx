@@ -2,7 +2,6 @@ import React from 'react';
 import CommentComponent from './CommentComponent';
 
 const CommentItem = ({ parentComment, allUsers }) => {
-  console.log(parentComment)
 
   const makeChildComments = (parentComment) => {
     return parentComment.sub_comments.map((childComment) => {
