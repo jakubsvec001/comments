@@ -64,7 +64,7 @@ while (commentCount > 1) {
 data += `${generateComment()};`;
 
 fs.writeFile(
-  path.resolve(__dirname, '..', 'sqlGenerators', 'commentsGenerator.sql'),
+  path.resolve(__dirname, 'commentsGenerator.sql'),
   data,
   'utf8',
   (err) => {

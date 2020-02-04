@@ -46,7 +46,7 @@ while (userCount > 1) {
 data += `${generateUser()};`;
 
 fs.writeFile(
-  path.resolve(__dirname, '..', 'sqlGenerators', 'usersGenerator.sql'),
+  path.resolve(__dirname, 'usersGenerator.sql'),
   data,
   'utf8',
   (err) => {

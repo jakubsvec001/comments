@@ -58,7 +58,7 @@ data += `${generateSubComment()};`;
 
 // async write to file
 fs.writeFile(
-  path.resolve(__dirname, '..', 'sqlGenerators', 'subCommentsGenerator.sql'),
+  path.resolve(__dirname, 'subCommentsGenerator.sql'),
   data,
   'utf8',
   (err) => {
