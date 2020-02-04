@@ -4,10 +4,10 @@
   "description": "Hack Reactor FEC ghrsea07 project component ",
   "main": "server/index.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --colors",
-    "start": "nodemon server/index.js",
+    "tests": "jest",
+    "tests:watch": "jest --watch",
+    "testis:coverage": "jest --coverage --colors",
+    "start": "node server/index.js",
     "bundle": "webpack --watch",
     "seed": "npm run .createSeedData && npm run .fill_db && echo --- MYSQL DATABASE bebo_beats SUCCESSFULLY SEEDED WITH TABLES: comments, sub_comments, users ---",
     ".createSeedData": "node ./database/data_generator/makeComments.js && node ./database/data_generator/makeSubComments.js && node ./database/data_generator/makeUsers.js",
@@ -55,6 +55,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
+    "axios": "^0.19.2",
     "babel-loader": "^8.0.6",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",

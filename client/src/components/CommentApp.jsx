@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { debounce } from 'lodash';
 import {
   SpinnerContainer,
@@ -7,7 +7,7 @@ import {
   CommentList,
 } from './styles/CommentAppStyled';
 import { fetchPagination, makeCommentItems } from '../helpers';
-import { render } from 'enzyme';
+
 
 /**
  *
@@ -53,8 +53,9 @@ class CommentApp extends Component {
       this.state.nextPagination,
       this.state.PAGINATION_LIMIT,
       )
-      .then((stream) => stream.json())
+      .then((response) => response.data)
       .then((data) => {
+        console.log(data)
         if (this.state.firstLoad) {
           this.setState({
             totalCommentsAvailable: data.totalCount,
@@ -142,7 +143,6 @@ class CommentApp extends Component {
   }
 
   render() {
-    console.log(this.state.commentArray);
     return (
       <CommentList data-test="comment-list">
         <CommentIcon data-test="comment-icon" />
