@@ -2,5 +2,12 @@
   "presets": [
     "@babel/preset-env",
     "@babel/preset-react"
-  ]
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        "react-remove-properties", {"properties": ["data-test"]}
+      ]
+    }
+  }
 }
