@@ -5,7 +5,7 @@ const { constructCommentsWithoutJoin } = require('./controller/constructComments
 const { constructUsers } = require('./controller/constructUsers');
 const { getTotalCommentCountForSong } = require('./controller/getTotalCommentCountForSong');
 const { parseUsersFromComments } = require('./controller/helpers');
-const PORT = 3000;
+const PORT = 3001;
 const PUBLIC = path.resolve(__dirname, '..', 'client', 'dist');
 const app = express();
 

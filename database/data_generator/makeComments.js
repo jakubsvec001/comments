@@ -7,7 +7,15 @@ const fs = require('fs');
 const faker = require('faker');
 const path = require('path');
 const dateFormat = require('date-format');
-const { commentTotal, userTotal, songTotal } = require('./constants');
+const {
+  commentTotal,
+  userTotal,
+  songTotal,
+  DB_USER,
+  DB_HOST,
+  DB_PASS,
+  DB_NAME,
+} = require('./constants');
 
 let data = `
 create database if not exists bobo_beats;

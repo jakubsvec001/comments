@@ -11,6 +11,10 @@ const {
   subCommentTotal,
   commentTotal,
   userTotal,
+  DB_USER,
+  DB_HOST,
+  DB_PASS,
+  DB_NAME,
 } = require('./constants');
 
 // create string to append onto
