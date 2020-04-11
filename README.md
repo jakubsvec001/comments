@@ -1,6 +1,6 @@
-SEED DB with "npm run seed"
-
 # comments section for BoboBeats song page
+
+> For the comments component reverse proxy repo, take a look here: https://github.com/Bobobeats/proxy-Jake
 
 This repo was built for deployment in a container using Docker, using React as a front-end framework, MySql as a database, and Node/Express as a server. 
 
